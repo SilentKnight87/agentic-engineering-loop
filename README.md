@@ -157,6 +157,7 @@ Current repo guardrails:
 - `.gitignore` blocks local privacy scanner files from being committed.
 - Before publishing, run an external local scan from outside the repo and verify
   git metadata with `git log --format='%h %an <%ae> | %cn <%ce> | %s' --all`.
+- Public releases should be verified from a fresh clone, not only the local checkout.
 
 ## License
 
