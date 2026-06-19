@@ -1,0 +1,28 @@
+{
+  "name": "agentic-engineering-loop-skill",
+  "version": "0.1.0",
+  "description": "Portable agent skill for the agentic engineering loop.",
+  "license": "MIT",
+  "bin": {
+    "agentic-engineering-loop-install": "bin/install.js"
+  },
+  "files": [
+    "skills",
+    "bin",
+    "install.sh",
+    "README.md",
+    "SKILL.md",
+    ".claude-plugin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SilentKnight87/agentic-engineering-loop.git"
+  },
+  "keywords": [
+    "agent-skills",
+    "hermes",
+    "claude-code",
+    "codex",
+    "opencode"
+  ]
+}

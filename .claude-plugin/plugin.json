@@ -1,0 +1,19 @@
+{
+  "name": "agentic-engineering-loop",
+  "version": "0.1.0",
+  "description": "Agentic software development loop: triage, brainstorm, plan, implement, adversarial review, fix loop, merge, compound.",
+  "author": {
+    "name": "SilentKnight87",
+    "url": "https://github.com/SilentKnight87"
+  },
+  "repository": "https://github.com/SilentKnight87/agentic-engineering-loop",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "software-development",
+    "compound-engineering",
+    "codex",
+    "hermes",
+    "review-loop"
+  ]
+}

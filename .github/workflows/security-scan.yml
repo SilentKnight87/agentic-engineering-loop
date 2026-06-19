@@ -1,0 +1,29 @@
+name: security-scan
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  privacy-and-secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Privacy/security scan
+        run: python3 scripts/privacy_scan.py --root .
+      - name: Gitleaks secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: npm vulnerability audit
+        run: |
+          if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then
+            npm audit --audit-level=high
+          else
+            echo "No npm lockfile; skipping npm audit."
+          fi
