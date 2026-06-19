@@ -2,3 +2,7 @@ node_modules/
 .DS_Store
 *.log
 .env
+privacy_scan.py
+scripts/privacy_scan.py
+local-privacy-scan.py
+*.local-scan.py

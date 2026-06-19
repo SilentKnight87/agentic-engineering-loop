@@ -147,16 +147,16 @@ See [`docs/sharing-research.md`](docs/sharing-research.md) for the research note
 
 ## Security / Privacy Guardrails
 
-This repo includes a lightweight privacy/security scanner:
+This repo intentionally does **not** track a custom PII denylist scanner. Public
+repos should not commit private identifiers into guardrail code.
 
-```bash
-python3 scripts/privacy_scan.py --root .
-./scripts/install-git-hooks.sh
-```
+Current repo guardrails:
 
-The scanner blocks common API key/token/private-key patterns, obvious PII, and
-forbidden real-name identity strings before public commits. GitHub Actions runs
-the same scanner on every push/PR and also runs Gitleaks.
+- GitHub Actions runs Gitleaks on every push/PR.
+- GitHub Actions runs `npm audit` when a lockfile exists.
+- `.gitignore` blocks local privacy scanner files from being committed.
+- Before publishing, run an external local scan from outside the repo and verify
+  git metadata with `git log --format='%h %an <%ae> | %cn <%ce> | %s' --all`.
 
 ## License
 
