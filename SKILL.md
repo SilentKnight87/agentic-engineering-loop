@@ -16,11 +16,11 @@ metadata:
 
 ## When to Use
 
-Load this skill when Peter drops a raw build idea and says "let's build something,"
+Load this skill when the user drops a raw build idea and says "let's build something,"
 "I have an idea for a project," "can you build this," or any variant of "take my
 idea and turn it into working, reviewed, pushed code."
 
-This is Peter's default software development workflow. It replaces ad-hoc
+This is the user's default software development workflow. It replaces ad-hoc
 build-then-debug with a structured agentic engineering pipeline built on the
 Compound Engineering (CE) core loop: **brainstorm -> plan -> work -> review -> compound**.
 
@@ -32,19 +32,19 @@ by idea shape:
 
 | Signal | Entry point | Why |
 |---|---|---|
-| Peter has no direction ("what should I build?") | **[0] IDEATE** (optional) | CE `ce-ideate` is for "not sure what to work on" |
+| the user has no direction ("what should I build?") | **[0] IDEATE** (optional) | CE `ce-ideate` is for "not sure what to work on" |
 | Idea is vague but directed ("build something around X") | **[1] BRAINSTORM** | `ce-brainstorm` defines WHAT |
 | Defined problem: bug report, requirements doc, precise feature request, or rough-but-complete description | **SKIP to [2] PLAN** | `ce-plan` defines HOW; brainstorm would re-litigate settled decisions |
-| Ambiguous between two reasonable interpretations | **ESCALATION gate** to Peter | Don't guess; the choice changes the approach |
+| Ambiguous between two reasonable interpretations | **ESCALATION gate** to the user | Don't guess; the choice changes the approach |
 
 Rule of thumb: if you can write a one-paragraph Problem Frame without asking
-Peter a clarifying question, skip brainstorm. If you would need to ask "what do
+the user a clarifying question, skip brainstorm. If you would need to ask "what do
 you actually want this to do?", brainstorm first.
 
 ## The Loop
 
 ```
-Peter's Idea
+the user's Idea
     |
     v
 [0] IDEATE       (optional, only when no direction)
@@ -58,7 +58,7 @@ Peter's Idea
     |               CE /ce-plan methodology
     |               Output: implementation plan with U-IDs, KTDs
     v
-[3] SIGN-OFF     --  ESCALATION gate: show plan to Peter, get approval
+[3] SIGN-OFF     --  ESCALATION gate: show plan to the user, get approval
     |
     v
 [4] IMPLEMENT    --  GLM 5.2 high reasoning
@@ -70,7 +70,7 @@ Peter's Idea
     |               CE /ce-code-review methodology
     |               Output: findings table (P0/P1/P2)
     v
-[6] FIX          --  GLM 5.2 high (cycles 1-3), medium if Peter approves cycles 4-5
+[6] FIX          --  GLM 5.2 high (cycles 1-3), medium if the user approves cycles 4-5
     |               Fix all P0 and P1 findings
     |               Commit and push fixes
     v
@@ -78,7 +78,7 @@ Peter's Idea
     |               Stall detection: if P0/P1 count does not decrease
     |               between consecutive rounds, escalate early.
     |               Exit CLEAN: "No P0/P1 findings remain"
-    |               Exit ESCALATE: cap reached -> ask Peter (force-merge
+    |               Exit ESCALATE: cap reached -> ask the user (force-merge
     |               with P1s documented, rewrite, or abandon)
     v
 [8] MERGE & PUSH --  Merge to main, push to GitHub
@@ -109,7 +109,7 @@ DONE
   where a wrong foundation compounds. Slow and expensive.
 - `xhigh`: default for brainstorm and plan.
 - `high`: implementation/fix cycles 1-3, review re-checks, and compound.
-- `medium`: implementation/fix cycles 4-5 only if Peter approves continuing past cycle 3.
+- `medium`: implementation/fix cycles 4-5 only if the user approves continuing past cycle 3.
 - Review rule: first GPT-5.5 review is xhigh; re-reviews are high because they verify targeted fixes, not full rediscovery.
 
 Never use GPT-5.5 for implementation (API billing, not subscription).
@@ -125,20 +125,20 @@ For each gate: what triggers it, what happens on failure, who resumes and from w
 | G1 | Pre-flight | Requirements doc (if brainstorm ran) or plan file missing before IMPLEMENT | Block, bail before code changes | Run brainstorm/plan, then retry |
 | G2 | Pre-flight | `codex login status` not OK before REVIEW | Block | `codex login`, then retry |
 | G3 | Pre-flight | Feature branch missing / tests failing after a FIX round | Block | Create branch or fix tests, retry |
-| G4 | Escalation | SIGN-OFF: plan ready | Pause, present plan, wait for Peter | Peter approves or revises scope |
+| G4 | Escalation | SIGN-OFF: plan ready | Pause, present plan, wait for the user | the user approves or revises scope |
 | G5 | Revision | REVIEW finds P0/P1 | Loop back to FIX with findings | Fix, re-review (bounded by G6) |
-| G6 | Revision (cap) | 5 review rounds reached OR P0/P1 count did not decrease between consecutive rounds | Escalate to Peter | Force-merge with P1s documented, rewrite, or abandon |
-| G7 | Escalation | Ambiguous requirement with two reasonable interpretations | Pause, present options | Peter picks |
-| G8 | Abort | Context pressure >70% during loop, or Codex OAuth fails mid-loop, or tests unrecoverable after a FIX | Stop, checkpoint progress, report | Peter investigates, restart from checkpoint |
+| G6 | Revision (cap) | 5 review rounds reached OR P0/P1 count did not decrease between consecutive rounds | Escalate to the user | Force-merge with P1s documented, rewrite, or abandon |
+| G7 | Escalation | Ambiguous requirement with two reasonable interpretations | Pause, present options | the user picks |
+| G8 | Abort | Context pressure >70% during loop, or Codex OAuth fails mid-loop, or tests unrecoverable after a FIX | Stop, checkpoint progress, report | the user investigates, restart from checkpoint |
 | G9 | Compound | Merge/push complete | If retro cannot be written, report and continue | Save retro/memory/skill update before final summary |
 
 ## Phase Details
 
 ### [0] Ideate (optional)
 
-Only when Peter has no direction. Load `ideation` skill. Produce 3-5 candidate
-directions with one-line value hypotheses. Peter picks one, then proceed to [1].
-Do not ideate if Peter already named a target.
+Only when the user has no direction. Load `ideation` skill. Produce 3-5 candidate
+directions with one-line value hypotheses. the user picks one, then proceed to [1].
+Do not ideate if the user already named a target.
 
 ### [1] Brainstorm
 
@@ -164,8 +164,8 @@ Do not ideate if Peter already named a target.
 
 ### [3] Sign-off (Escalation gate G4)
 
-Present plan summary to Peter. If approved, switch model for implementation.
-If Peter revises scope, return to [1] or [2] as appropriate. Do not implement
+Present plan summary to the user. If approved, switch model for implementation.
+If the user revises scope, return to [1] or [2] as appropriate. Do not implement
 before approval.
 
 ### [4] Implement
@@ -211,7 +211,7 @@ Return to [5]. Include prior round fix status in the review prompt.
 - Stall detection: if the P0/P1 count does not decrease between two consecutive
   rounds, stop early and escalate (do not burn remaining rounds on a stuck issue).
 - On CLEAN exit: proceed to [8].
-- On cap/stall: escalation gate G6 — present Peter with: (a) force-merge with
+- On cap/stall: escalation gate G6 — present the user with: (a) force-merge with
   remaining P1s documented in README, (b) rewrite the offending unit, (c) abandon.
   Never loop forever and never silently accept P1s.
 
@@ -234,16 +234,16 @@ CE `/ce-compound`: capture learnings so the next loop is sharper.
 
 ## Pitfalls
 
-1. **Don't skip sign-off.** Peter should see the plan before implementation (G4).
-2. **Don't brainstorm a defined problem.** If Peter handed you a bug report or a
+1. **Don't skip sign-off.** the user should see the plan before implementation (G4).
+2. **Don't brainstorm a defined problem.** If the user handed you a bug report or a
    precise feature request, go straight to PLAN. Brainstorm re-litigates settled
    decisions and wastes a long GLM session.
 3. **Parallel subagent limits.** Max 3 concurrent. Batch if more.
 4. **Subagent collisions.** Always `git pull --rebase` between batches.
 5. **Review loop must converge.** Hard cap 5 rounds with stall detection (G6).
-   After the cap, escalate to Peter — do not soft-accept P1s and do not loop
+   After the cap, escalate to the user — do not soft-accept P1s and do not loop
    forever. P2/P3 findings are deferred by default; P0/P1 require a fix or
-   explicit Peter decision.
+   explicit the user decision.
 6. **Savings double-counting.** Add per-entity caps when multiple scanners find waste in the same source.
 7. **Codex OAuth.** Pre-flight gate G2 checks `codex login status` before review.
    If OAuth fails mid-loop, abort (G8) and checkpoint rather than retry blindly.
@@ -261,7 +261,7 @@ CE `/ce-compound`: capture learnings so the next loop is sharper.
 - [ ] Entry triage picked the right entry point (ideate / brainstorm / direct to plan)
 - [ ] Requirements doc saved under docs/brainstorms/ (if brainstorm ran)
 - [ ] Plan saved under docs/plans/ with U-IDs
-- [ ] Peter approved plan before implementation (G4)
+- [ ] the user approved plan before implementation (G4)
 - [ ] Feature branch created (G1 passed)
 - [ ] All implementation units have passing tests
 - [ ] Codex login verified before each review round (G2)

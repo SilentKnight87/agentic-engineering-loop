@@ -21,7 +21,7 @@ Session source: Ops Margin Agent build/review workflow plus follow-up audit of p
    - No direction -> ideate.
    - Vague but pointed idea -> brainstorm.
    - Defined bug/problem/feature -> skip brainstorm and plan directly.
-   - Ambiguous shape -> ask Peter because the entry route changes cost and artifacts.
+   - Ambiguous shape -> ask the user because the entry route changes cost and artifacts.
 
 2. **Cross-model review**
    - Builder and reviewer should be different roles and preferably different vendors/models.
@@ -40,7 +40,7 @@ Session source: Ops Margin Agent build/review workflow plus follow-up audit of p
 5. **Reasoning taper**
    - Brainstorm/plan: GLM 5.2 xhigh, max only for novel/high-uncertainty architecture.
    - Implement/fix cycles 1-3: GLM 5.2 high.
-   - Fix cycles 4-5: GLM 5.2 medium, only after Peter approves continuation.
+   - Fix cycles 4-5: GLM 5.2 medium, only after the user approves continuation.
    - First GPT-5.5 review: xhigh.
    - Re-reviews: high.
 

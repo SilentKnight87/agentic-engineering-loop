@@ -1,6 +1,6 @@
 # OpenCode Go routing checklist for GLM52 workflows
 
-Use this when Peter says GLM 5.2 should move from OpenRouter to OpenCode Go, or any similar provider swap affects the agentic engineering loop.
+Use this when the user says GLM 5.2 should move from OpenRouter to OpenCode Go, or any similar provider swap affects the agentic engineering loop.
 
 ## Goal
 
