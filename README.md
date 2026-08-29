@@ -1,21 +1,37 @@
-# Agentic Engineering Loop
+# Agentic Engineering Loop -> Software Factory
 
-A reusable agent skill for shipping software with an explicit loop:
+Reusable agent skills for shipping software with an explicit loop, now grown
+into a small software factory:
 
 ```text
-idea -> triage -> brainstorm? -> plan -> sign-off -> implement -> review -> fix -> loop -> merge -> compound
+idea -> triage -> brainstorm? -> plan -> sign-off -> implement (1 take or N variations)
+     -> cross-vendor review -> fix -> loop -> merge -> compound
 ```
 
-The workflow combines:
+Four skills:
 
-- Compound Engineering style `brainstorm -> plan -> work -> review -> compound`
-- GLM 5.2 via OpenCode Go for ideation, planning, implementation, and fixes
-- GPT-5.5 via Codex OAuth for adversarial review
-- hard review-loop caps, stall detection, and explicit escalation gates
+| Skill | What it does |
+|---|---|
+| [`agentic-engineering-loop`](skills/agentic-engineering-loop/SKILL.md) | The core loop: triage, brainstorm, plan, sign-off, implement, adversarial review, bounded fix loop, merge, compound. v2 routes by **harness roles** (plan/task/smol/advisor/vision/slow), never concrete models, and adds a variations mode (N parallel takes in separate worktrees, user picks or combines). |
+| [`software-factory`](skills/software-factory/SKILL.md) | Orchestration: one pod per project (cmux workspaces or supervised processes), worktree isolation, operator-in-the-loop or headless (Hermes/cron) invocation, quota-aware concurrency, failure handling. |
+| [`factory-review`](skills/factory-review/SKILL.md) | The review phase: risk-driven persona roster (correctness, security/STRIDE, performance, plan-vs-diff, evidence audit, blast radius, unslop, doubt pass), cross-vendor invariant, P0/P1/P2 output contract. |
+| [`factory-frontend`](skills/factory-frontend/SKILL.md) | Anti-slop frontend lane: taste capture + reference-driven DESIGN.md, build pass calibrated against known AI-look clusters, dual review gate (visual taste + measurable web quality). |
 
-This repo is currently published as a portable `SKILL.md`-based agent skill. It is
-not yet a heavyweight NPM/plugin package with bundled agents/hooks, but it is laid
-out so it can grow into that.
+## Design principles
+
+- **Roles, not models.** Concrete model names live in ONE file:
+  [`references/model-routing.md`](skills/agentic-engineering-loop/references/model-routing.md).
+  Subscriptions change; skills don't.
+- **Redundancy.** Every role has a fallback chain crossing at least two
+  subscriptions; the harness rotates on quota errors.
+- **Cross-vendor review.** The reviewer never shares the implementer's vendor.
+- **Nuggets, not frameworks.** Vetted imports from Compound Engineering,
+  superpowers, gstack, pstack, and Addy Osmani's skills — decisions recorded in
+  [`references/skill-map.md`](skills/agentic-engineering-loop/references/skill-map.md).
+- **Hard loop control.** 5-round review cap, stall detection, explicit
+  escalation gates. Never loop forever; never silently accept P1s.
+- **Compound.** One learning per run into `docs/solutions/`, read by the next
+  run's plan phase.
 
 ## Install
 
@@ -25,139 +41,68 @@ out so it can grow into that.
 hermes skills install SilentKnight87/agentic-engineering-loop/skills/agentic-engineering-loop
 ```
 
-### Hermes Agent — tap install
+(Repeat with `software-factory`, `factory-review`, `factory-frontend`.)
 
-```bash
-hermes skills tap add SilentKnight87/agentic-engineering-loop
-hermes skills search agentic-engineering-loop
-hermes skills install SilentKnight87/agentic-engineering-loop/agentic-engineering-loop
-```
-
-Hermes taps expect skills under `skills/<skill-name>/SKILL.md`, which is this
-repo's canonical layout.
-
-### Local installer for Hermes / Claude Code / Codex / OpenCode
+### Local installer for Hermes / Claude Code / Codex / OpenCode / OMP
 
 ```bash
 git clone https://github.com/SilentKnight87/agentic-engineering-loop.git
 cd agentic-engineering-loop
-./install.sh --agent hermes
-# or: ./install.sh --agent claude
-# or: ./install.sh --agent codex
-# or: ./install.sh --agent opencode
-```
-
-Install all supported targets:
-
-```bash
-./install.sh --agent all
+./install.sh --agent omp        # or hermes|claude|codex|opencode|all
 ```
 
 ### NPM / npx shape
 
-This repo includes a tiny `package.json` + `bin/install.js` wrapper so it can be
-used directly from GitHub with npx:
+```bash
+npx github:SilentKnight87/agentic-engineering-loop --agent omp
+```
+
+## How to use
+
+Single project, you in the loop:
+
+```text
+Use the agentic-engineering-loop skill. I have a rough idea for a CLI that
+audits my cloud spend and proposes safe cost reductions.
+```
+
+Several projects in parallel, orchestrated:
+
+```text
+Use the software-factory skill. Pods: coupon-automation, portfolio-site,
+solo-leveling. Plans are in each repo's docs/plans/.
+```
+
+Headless (invoked by Hermes or cron; plan must already be signed off):
 
 ```bash
-npx github:SilentKnight87/agentic-engineering-loop --agent hermes
+omp -p --cwd <worktree> "Load the agentic-engineering-loop skill and execute docs/plans/<plan>.md. Headless mode."
 ```
 
-This is intentionally lightweight. If this becomes a broader marketplace/plugin,
-the next step is publishing an official npm package and adding richer adapters.
-
-## Repository Shape
+## Repository shape
 
 ```text
-agentic-engineering-loop/
-├── README.md
-├── SKILL.md                                  # convenience mirror
-├── skills/
-│   └── agentic-engineering-loop/
-│       ├── SKILL.md                          # canonical skill
-│       └── references/
-│           ├── build-review-loop-control-policy.md
-│           ├── current-agentic-loop-patterns-2026-06-18.md
-│           └── opencode-go-routing.md
-├── docs/
-│   └── sharing-research.md
-├── .claude-plugin/
-│   └── plugin.json                           # Claude Code plugin-compatible metadata
-├── install.sh                                # multi-agent installer
-├── package.json                              # npx wrapper metadata
-└── bin/
-    └── install.js
+skills/
+├── agentic-engineering-loop/
+│   ├── SKILL.md
+│   └── references/
+│       ├── model-routing.md            # the ONLY place model names appear
+│       ├── skill-map.md                # vetted skill-to-phase decisions
+│       ├── research-recipe.md          # research skills + auth prerequisites
+│       ├── build-review-loop-control-policy.md
+│       └── current-agentic-loop-patterns-2026-06-18.md
+├── software-factory/SKILL.md
+├── factory-review/SKILL.md
+└── factory-frontend/SKILL.md
 ```
 
-## How to Use
+`SKILL.md` at the repo root mirrors the canonical loop skill for convenience.
 
-In a Hermes/Claude/Codex/OpenCode session, ask the agent to load or follow the
-`agentic-engineering-loop` skill before starting a software build.
+## Security / privacy guardrails
 
-Example:
-
-```text
-Use the agentic-engineering-loop skill. I have a rough idea for a CLI that audits
-my cloud spend and proposes safe cost reductions.
-```
-
-The skill will route the task based on how formed the idea is:
-
-| Input shape | Entry point |
-|---|---|
-| No direction / "what should I build?" | Ideate |
-| Vague but directed idea | Brainstorm -> Plan |
-| Defined bug, feature, or requirements doc | Plan |
-| Ambiguous scope | Ask for a decision |
-
-## Model Policy
-
-| Phase | Model | Effort |
-|---|---|---|
-| Ideate | GLM 5.2 via OpenCode Go | xhigh |
-| Brainstorm | GLM 5.2 via OpenCode Go | xhigh; max only for novel architecture |
-| Plan | GLM 5.2 via OpenCode Go | xhigh; max only for novel architecture |
-| Implement | GLM 5.2 via OpenCode Go | high |
-| First review | GPT-5.5 via Codex OAuth | xhigh |
-| Re-review | GPT-5.5 via Codex OAuth | high |
-| Fix | GLM 5.2 via OpenCode Go | high cycles 1-3; medium cycles 4-5 |
-| Compound | GLM 5.2 via OpenCode Go | high |
-
-## Loop Control
-
-- Hard cap: 5 review rounds
-- Soft escalation: after round 3 if P0/P1 remain
-- Stall detection: escalate if P0/P1 count stops decreasing
-- P2/P3: log/defer; do not loop
-- P0/P1: fix or explicitly escalate
-
-## Why This Shape
-
-Current agent ecosystems are converging on a shared structure:
-
-- **Hermes Agent:** GitHub taps with `skills/<name>/SKILL.md` plus optional `references/`, `templates/`, `scripts/`, `assets/`
-- **Claude Code:** `skills/<name>/SKILL.md`, or plugin repos with `.claude-plugin/plugin.json`
-- **Codex / Open Agent Skills:** `SKILL.md` directories, often under `.agents/skills/` for repo scope
-- **Community repos:** usually combine `skills/`, optional install scripts, and sometimes npm/npx wrappers
-
-So this repo uses the smallest interoperable core: a canonical `SKILL.md` folder
-with references, plus simple installers/adapters.
-
-See [`docs/sharing-research.md`](docs/sharing-research.md) for the research notes.
-
-
-## Security / Privacy Guardrails
-
-This repo intentionally does **not** track a custom PII denylist scanner. Public
-repos should not commit private identifiers into guardrail code.
-
-Current repo guardrails:
-
-- GitHub Actions runs Gitleaks on every push/PR.
-- GitHub Actions runs `npm audit` when a lockfile exists.
-- `.gitignore` blocks local privacy scanner files from being committed.
-- Before publishing, run an external local scan from outside the repo and verify
-  git metadata with `git log --format='%h %an <%ae> | %cn <%ce> | %s' --all`.
-- Public releases should be verified from a fresh clone, not only the local checkout.
+- GitHub Actions runs Gitleaks on every push/PR and `npm audit` when a
+  lockfile exists.
+- No private identifiers in guardrail code; verify releases from a fresh clone.
 
 ## License
 

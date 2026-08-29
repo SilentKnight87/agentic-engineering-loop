@@ -10,7 +10,7 @@ for (let i = 0; i < args.length; i++) {
   if (args[i] === '--agent') agent = args[++i];
   else if (args[i] === '--mode') mode = args[++i];
   else if (args[i] === '-h' || args[i] === '--help') {
-    console.log('Usage: npx github:SilentKnight87/agentic-engineering-loop --agent hermes|claude|codex|opencode|all [--mode copy|symlink]');
+    console.log('Usage: npx github:SilentKnight87/agentic-engineering-loop --agent hermes|claude|codex|opencode|omp|all [--mode copy|symlink]');
     process.exit(0);
   } else if (args[i] === 'install') {
     // allow: npx ... install --agent hermes
@@ -21,7 +21,7 @@ for (let i = 0; i < args.length; i++) {
 }
 
 const root = path.resolve(__dirname, '..');
-const src = path.join(root, 'skills', 'agentic-engineering-loop');
+const SKILLS = ['agentic-engineering-loop', 'software-factory', 'factory-review', 'factory-frontend'];
 
 function copyDir(srcDir, destDir) {
   fs.rmSync(destDir, { recursive: true, force: true });
@@ -31,17 +31,20 @@ function copyDir(srcDir, destDir) {
   else throw new Error(`Unsupported --mode: ${mode}`);
 }
 
-function installOne(name, dest) {
-  copyDir(src, dest);
-  console.log(`installed ${name} -> ${dest}`);
+function installOne(name, base) {
+  for (const skill of SKILLS) {
+    copyDir(path.join(root, 'skills', skill), path.join(base, skill));
+    console.log(`installed ${name}/${skill} -> ${path.join(base, skill)}`);
+  }
 }
 
 const home = os.homedir();
 const targets = {
-  hermes: [["hermes", path.join(home, '.hermes', 'skills', 'software-development', 'agentic-engineering-loop')]],
-  claude: [["claude", path.join(home, '.claude', 'skills', 'agentic-engineering-loop')]],
-  codex: [["codex", path.join(home, '.agents', 'skills', 'agentic-engineering-loop')], ["codex-legacy", path.join(home, '.codex', 'skills', 'agentic-engineering-loop')]],
-  opencode: [["opencode", path.join(home, '.config', 'opencode', 'skills', 'agentic-engineering-loop')]],
+  hermes: [["hermes", path.join(home, '.hermes', 'skills', 'software-development')]],
+  claude: [["claude", path.join(home, '.claude', 'skills')]],
+  codex: [["codex", path.join(home, '.agents', 'skills')], ["codex-legacy", path.join(home, '.codex', 'skills')]],
+  opencode: [["opencode", path.join(home, '.config', 'opencode', 'skills')]],
+  omp: [["omp", path.join(home, '.agents', 'skills')]],
 };
 
 if (agent === 'all') {

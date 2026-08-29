@@ -1,7 +1,7 @@
 {
   "name": "agentic-engineering-loop",
-  "version": "0.1.0",
-  "description": "Agentic software development loop: triage, brainstorm, plan, implement, adversarial review, fix loop, merge, compound.",
+  "version": "0.2.0",
+  "description": "Agentic software factory: the engineering loop (triage, brainstorm, plan, sign-off, implement, cross-vendor adversarial review, fix, merge, compound) plus pod orchestration, persona-driven review, and a frontend anti-slop lane.",
   "author": {
     "name": "SilentKnight87",
     "url": "https://github.com/SilentKnight87"
@@ -11,9 +11,11 @@
   "keywords": [
     "agent-skills",
     "software-development",
+    "software-factory",
     "compound-engineering",
-    "codex",
+    "orchestration",
     "hermes",
+    "omp",
     "review-loop"
   ]
 }
