@@ -1,19 +1,19 @@
 # Model Routing — role to model mapping
 
-Last verified: 2026-08-28. Subscriptions evolve; this file is the ONLY place
+Last verified: 2026-09-01. Subscriptions evolve; this file is the ONLY place
 concrete model names appear. The loop skill and factory skills reference roles.
 
 ## Current mapping (OMP `~/.omp/agent/config.yml`)
 
 | Role | Primary | Fallback chain | Subscription |
 |---|---|---|---|
-| plan | anthropic/claude-fable-5 | openai-codex/gpt-5.6-sol | Claude Max |
-| default | anthropic/claude-fable-5:medium | gpt-5.6-sol -> claude-sonnet-5 -> gemini-3.7-flash | Claude Max / Codex |
+| plan | anthropic/claude-fable-5-1 | openai-codex/gpt-5.6-sol | Claude Max |
+| default | openai-codex/gpt-5.6-sol:high | claude-sonnet-5 -> gemini-3.7-flash | Codex |
 | task (workers) | opencode-go/glm-5.3 | kimi-k2.7-code -> grok-4.6 (both opencode-go) | OpenCode Go |
 | smol (fan-out) | google-antigravity/gemini-3.7-flash | gpt-5.3-codex-spark -> glm-5.3-flash | Antigravity free daily |
 | slow | opencode-go/kimi-k3 | deepseek-v4-pro | OpenCode Go |
 | vision | google-antigravity/gemini-3.7-flash | claude-sonnet-5 | Antigravity free daily |
-| advisor / reviewer | anthropic/claude-fable-5 | openai-codex/gpt-5.6-terra | Claude Max / Codex |
+| advisor / reviewer | anthropic/claude-fable-5-1 | openai-codex/gpt-5.6-terra | Claude Max / Codex |
 
 ## Cross-vendor review invariant
 
