@@ -1,3 +1,5 @@
+> Historical snapshot. Kept for context; not live routing or selection. Verify current models and skills before use.
+
 # Model Routing — role to model mapping
 
 Last verified: 2026-09-01. Subscriptions evolve; this file is the ONLY place
@@ -15,12 +17,12 @@ concrete model names appear. The loop skill and factory skills reference roles.
 | vision | google-antigravity/gemini-3.7-flash | claude-sonnet-5 | Antigravity free daily |
 | advisor / reviewer | anthropic/claude-fable-5-1 | openai-codex/gpt-5.6-terra | Claude Max / Codex |
 
-## Cross-vendor review invariant
+## Reviewer independence
 
-Reviewer vendor MUST differ from implementer vendor. Current default satisfies
-it: implementer = Z.AI GLM (OpenCode Go), reviewer = Anthropic (fallback
-OpenAI). If the implementer chain rotates to grok-4.6, the reviewer stays
-cross-vendor automatically.
+Prefer a reviewer from a different vendor than the implementer for explicit
+adversarial factory review. If the fallback chain cannot provide one, use the
+best available independent reviewer and report the limitation; this table does
+not create a gate for ordinary authorized work.
 
 ## Quota pressure notes
 

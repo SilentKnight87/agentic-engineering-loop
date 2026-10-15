@@ -1,3 +1,5 @@
+> Historical snapshot. Kept for context; not live routing or selection. Verify current models and skills before use.
+
 # Current Agentic Engineering Loop Patterns — 2026-06-18
 
 Session source: Ops Margin Agent build/review workflow plus follow-up audit of public agentic engineering systems.
