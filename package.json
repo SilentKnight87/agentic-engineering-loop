@@ -11,7 +11,6 @@
     "bin",
     "install.sh",
     "README.md",
-    "SKILL.md",
     ".claude-plugin"
   ],
   "repository": {

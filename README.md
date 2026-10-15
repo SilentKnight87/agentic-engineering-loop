@@ -4,9 +4,14 @@ Reusable agent skills for shipping software with an explicit loop, now grown
 into a small software factory:
 
 ```text
-idea -> triage -> brainstorm? -> plan -> sign-off -> implement (1 take or N variations)
-     -> cross-vendor review -> fix -> loop -> merge -> compound
+idea -> triage -> brainstorm? -> plan -> implement (1 take or N variations)
+     -> cross-vendor review -> fix -> loop -> merge-ready -> compound
 ```
+
+Status (2026-10-14): v2.1 removes mandatory sign-off gates; the loop runs proportionally to risk under the
+user's existing authorization. The concrete model table in `references/model-routing.md` is a dated snapshot
+(2026-09-01), not live routing; pick current models from your own harness catalog. For T3 Code, pstack's
+T3 port covers the same method natively.
 
 Four skills:
 

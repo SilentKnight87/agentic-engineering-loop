@@ -43,7 +43,7 @@ hermes --profile glm52 status --all | grep -E 'Model:|Provider:'
 python3 - <<'PY'
 from pathlib import Path
 import yaml
-cfg = yaml.safe_load(Path('/Users/aiserver/.hermes/profiles/glm52/config.yaml').read_text())
+cfg = yaml.safe_load((Path.home() / '.hermes/profiles/glm52/config.yaml').read_text())
 print('model.provider=', cfg['model'].get('provider'))
 print('model.default=', cfg['model'].get('default'))
 print('providers.opencode-go.model=', cfg['providers']['opencode-go'].get('model'))

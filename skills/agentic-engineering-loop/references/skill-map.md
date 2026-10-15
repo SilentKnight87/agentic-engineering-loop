@@ -1,3 +1,5 @@
+> Historical snapshot. Kept for context; not live routing or selection. Verify current models and skills before use.
+
 # Skill Map — vetted skill-to-phase assignments
 
 Vetting date: 2026-08-28 (four parallel research passes over primary sources).
