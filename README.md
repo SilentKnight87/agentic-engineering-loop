@@ -8,10 +8,13 @@ idea -> triage -> brainstorm? -> plan -> implement (1 take or N variations)
      -> cross-vendor review -> fix -> loop -> merge-ready -> compound
 ```
 
-Status (2026-10-14): v2.1 removes mandatory sign-off gates; the loop runs proportionally to risk under the
-user's existing authorization. The concrete model table in `references/model-routing.md` is a dated snapshot
-(2026-09-01), not live routing; pick current models from your own harness catalog. For T3 Code, pstack's
-T3 port covers the same method natively.
+> **Frozen (2026-10-16).** This repo is kept as a write-up and is no longer maintained. I now run
+> [pstack](https://github.com/cursor/plugins/tree/main/pstack) through its T3 Code port,
+> [t3-pstack](https://github.com/chhoumann/t3-pstack), unmodified, with a small private overlay on top:
+> authority limits, per-machine model routing from the live T3 catalog, and a proof gate that requires an
+> independent verifier from another model family before a change counts as done. The ideas that carried over
+> are in the "Design principles" below: roles not models, cross-vendor review, bounded fix rounds, proof before done.
+> The model table in `references/model-routing.md` is a 2026-09-01 snapshot; do not route from it.
 
 Four skills:
 
