@@ -15,7 +15,11 @@ configuration failures stop the gate. Checks do not rewrite source files.
 fingerprint hashes tool, path, rule, full diagnostic, source line, and occurrence.
 Moving a line does not create debt, but adding another identical finding does.
 Removed findings do not fail. No count-based allowances apply. New files receive
-the same rules. jscpd builds an ephemeral clone baseline from that same Git SHA
+the same rules. JavaScript lint, type, unused-code, and suppression checks cover
+`.js`, `.mjs`, and `.cjs` throughout the repository. Suppression checks inspect
+JavaScript comments, including TypeScript directives and Knip visibility tags.
+ShellCheck and shell suppression checks cover `.sh` files and shell shebang
+scripts, including Git hooks. Deleted tracked files are skipped. jscpd builds an ephemeral clone baseline from that same Git SHA
 using 100 tokens and 8 lines, without network or embedding models.
 
 ## Reproduce the baseline

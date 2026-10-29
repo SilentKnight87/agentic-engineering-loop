@@ -34,6 +34,22 @@ try {
     assert.equal(help.status, 0); assert.match(help.stdout, /Usage:/);
     const invalid = invoke(surface, ['--unknown'], scratch);
     assert.equal(invalid.status, 1); assert.match(invalid.stderr, /Unknown arg:/);
+    for (const args of [[], ['install'], ['--mode', 'invalid']]) {
+      const home = path.join(scratch, surface, `dispatch-${args.join('-') || 'default'}`);
+      mkdirSync(home, { recursive: true });
+      const result = invoke(surface, args, home);
+      const positionalRejected = surface === 'shell' && args[0] === 'install';
+      const invalidMode = args[0] === '--mode';
+      assert.equal(result.status, positionalRejected || invalidMode ? 1 : 0, result.stderr);
+      if (positionalRejected) assert.match(result.stderr, /Unknown arg: install/);
+      else if (invalidMode) assert.match(result.stderr, /Unsupported --mode: invalid/);
+      else for (const skill of skills) {
+        const target = path.join(home, destinations.hermes[0], skill);
+        assert.equal(lstatSync(target).isSymbolicLink(), false);
+        sameTree(path.join(root, 'skills', skill), target);
+      }
+      lines.push(`${surface} ${args.join(' ') || 'default'}: dispatch and result verified`);
+    }
     for (const mode of ['copy', 'symlink']) {
       for (const [agent, bases] of Object.entries(destinations)) {
         const home = path.join(scratch, surface, mode, agent);

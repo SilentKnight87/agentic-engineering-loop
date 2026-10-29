@@ -15,12 +15,17 @@ test('Git invokes the hook and preserves human attribution and message text', ()
     mkdirSync(path.join(dir, 'scripts'));
     cpSync('.githooks', path.join(dir, '.githooks'), { recursive: true });
     cpSync('scripts/strip-ai-trailers.mjs', path.join(dir, 'scripts/strip-ai-trailers.mjs'));
-    const message = 'Verify hook\n\nKeep this body.\n' + ['Claude', 'Codex', 'Cursor', 'Copilot', 'Gemini', 'GPT-6'].map((ai) => `Co-Authored-By: ${ai} <bot@example.invalid>\n`).join('') + 'Generated with a tool\n🤖 Generated with another tool\nCo-Authored-By: Human Tester <human@example.invalid>\n';
+    const humans = [
+      ['Human Tester', 'human', 'example.invalid'], ['Claude Martin', 'claude.martin', 'example.invalid'],
+      ['Gemini Patel', 'gemini', 'example.invalid'], ['Human Tester', 'human', 'cursor.com'],
+    ].map(([name, local, domain]) => `${name} <${local}@${domain}>`);
+    const message = 'Verify hook\n\nKeep this body.\n' + ['Claude', 'Codex', 'Cursor', 'Copilot', 'Gemini', 'GPT-6', 'Claude Code', 'GitHub Copilot', 'Cursor Agent', 'Claude Sonnet 4.5', 'Gemini 2.5 Pro'].map((ai) => `Co-Authored-By: ${ai} <bot@example.invalid>\n`).join('') + 'Co-Authored-By: Claude\nGenerated with a tool\n🤖 Generated with another tool\n' + humans.map((human) => `Co-Authored-By: ${human}\n`).join('');
     const file = path.join(dir, 'message'); writeFileSync(file, message);
     git('add', '.'); git('commit', '-q', '-F', file);
     const committed = git('log', '-1', '--format=%B');
     assert.match(committed, /Keep this body/); assert.match(committed, /Co-Authored-By: Human Tester/);
-    assert.doesNotMatch(committed, /Generated with|Claude|Codex|Cursor|Copilot|Gemini|GPT-6/);
+    for (const human of humans) assert.ok(committed.includes(`Co-Authored-By: ${human}`), human);
+    assert.doesNotMatch(committed, /Generated with|<bot@example.invalid>|Co-Authored-By: Claude\n/);
     const cleanedFile = path.join(dir, '.git/COMMIT_EDITMSG');
     const once = readFileSync(cleanedFile, 'utf8');
     execFileSync(process.execPath, ['scripts/strip-ai-trailers.mjs', cleanedFile]);

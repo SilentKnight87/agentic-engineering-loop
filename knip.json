@@ -1,10 +1,10 @@
 {
   "entry": [
-    "scripts/*.mjs",
-    "tests/*.mjs",
-    ".agents/skills/*/scripts/*.mjs"
+    "scripts/*.{js,mjs,cjs}",
+    "tests/*.{js,mjs,cjs}",
+    ".agents/skills/*/scripts/*.{js,mjs,cjs}"
   ],
   "project": [
-    "**/*.{js,mjs}"
+    "**/*.{js,mjs,cjs}"
   ]
 }

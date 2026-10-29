@@ -2,7 +2,7 @@ import { ESLint } from 'eslint';
 import { lint } from 'markdownlint/sync';
 import ts from 'typescript';
 import { createHash } from 'node:crypto';
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 
@@ -19,16 +19,37 @@ function run(command, args, allowed = [0]) {
   return result.stdout;
 }
 const files = run('git', ['ls-files', '--cached', '--others', '--exclude-standard', '-z'])
-  .split('\0').filter(Boolean);
-for (const file of files.filter((name) => /\.(?:m?js|sh)$/.test(name))) {
-  for (const line of readFileSync(file, 'utf8').split(/\r?\n/)) {
-    if (/^\s*(?:\/\/|\/\*|#)\s*(?:@ts-(?:ignore|nocheck|expect-error)|shellcheck\s+disable|jscpd:ignore)/.test(line)) {
-      findings.push({ tool: 'suppression', file, rule: 'no-suppressions', message: 'Do not suppress quality findings', source: line.trim() });
+  .split('\0').filter((file) => file && existsSync(file) && statSync(file).isFile());
+const javascript = files.filter((file) => /\.(?:[cm]?js)$/.test(file));
+const shells = files.filter((file) => file.endsWith('.sh') ||
+  /^#!.*\b(?:bash|sh|dash|ksh|zsh)\b/.test(readFileSync(file, 'utf8').split('\n')[0]));
+/** @param {string} file @param {string} comment */
+function checkComment(file, comment) {
+  if (/@ts-(?:ignore|nocheck|expect-error)|shellcheck\s+disable|jscpd:ignore|@(public|internal|alpha|beta)\b/.test(comment)) {
+    findings.push({ tool: 'suppression', file, rule: 'no-suppressions', message: 'Do not suppress quality findings', source: comment.trim() });
+  }
+}
+for (const file of javascript) {
+  const text = readFileSync(file, 'utf8');
+  const tree = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, ts.ScriptKind.JS);
+  const comments = new Map();
+  /** @param {ts.Node} node */
+  function visit(node) {
+    for (const range of [...ts.getLeadingCommentRanges(text, node.pos) ?? [], ...ts.getTrailingCommentRanges(text, node.end) ?? []]) {
+      comments.set(range.pos, text.slice(range.pos, range.end));
     }
+    for (const child of node.getChildren(tree)) visit(child);
+  }
+  visit(tree);
+  for (const comment of comments.values()) checkComment(file, comment);
+}
+for (const file of shells) {
+  for (const line of readFileSync(file, 'utf8').split(/\r?\n/)) {
+    if (/^\s*#/.test(line)) checkComment(file, line);
   }
 }
 const eslint = new ESLint();
-for (const result of await eslint.lintFiles(files.filter((file) => /\.(m?js)$/.test(file)))) {
+for (const result of await eslint.lintFiles(javascript)) {
   for (const msg of result.messages) {
     if (msg.fatal) throw new Error(`ESLint could not analyze ${result.filePath}: ${msg.message}`);
     findings.push({ tool: 'eslint', file: path.relative(process.cwd(), result.filePath), rule: msg.ruleId ?? 'configuration-warning',
@@ -52,7 +73,6 @@ for (const [file, errors] of Object.entries(markdown)) {
   for (const error of errors) findings.push({ tool: 'markdownlint', file, rule: error.ruleNames[0],
     message: error.errorDetail ?? error.ruleDescription, source: source(file, error.lineNumber) });
 }
-const shells = files.filter((file) => file.endsWith('.sh') || file === '.githooks/commit-msg');
 /** @type {{file: string, line: number, code: number, message: string}[]} */
 const shellFindings = JSON.parse(run('shellcheck', ['--norc', '--format=json', '--severity=style', ...shells], [0, 1]));
 for (const msg of shellFindings) findings.push({ tool: 'shellcheck', file: msg.file,

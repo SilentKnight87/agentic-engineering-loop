@@ -8,5 +8,6 @@
     "module": "NodeNext",
     "types": ["node"]
   },
-  "include": ["bin/**/*.js", "scripts/**/*.mjs", "tests/**/*.mjs", ".agents/**/scripts/**/*.mjs"]
+  "include": ["**/*.js", "**/*.mjs", "**/*.cjs", ".agents/**/*.js", ".agents/**/*.mjs", ".agents/**/*.cjs"],
+  "exclude": ["node_modules", ".verify", ".claude"]
 }

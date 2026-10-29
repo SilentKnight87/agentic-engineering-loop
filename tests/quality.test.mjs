@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, rmSync, cpSync, symlinkSync, writeFileSync, readFileSync } from 'node:fs';
+import { mkdtempSync, rmSync, cpSync, symlinkSync, writeFileSync, readFileSync, mkdirSync } from 'node:fs';
 import { spawnSync, execFileSync } from 'node:child_process';
 import os from 'node:os';
 import path from 'node:path';
 
-test('the quality gate rejects synthetic defects and tool errors', { timeout: 120000 }, () => {
+test('the quality gate rejects synthetic defects and tool errors', { timeout: 240000 }, () => {
   const dir = mkdtempSync(path.join(os.tmpdir(), 'loop-gate-'));
   try {
     const files = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '-z'], { encoding: 'utf8' }).split('\0').filter(Boolean);
@@ -22,10 +22,66 @@ test('the quality gate rejects synthetic defects and tool errors', { timeout: 12
     assert.equal(rejected.status, 1, rejected.stdout + rejected.stderr);
     for (const rule of ['no-unused-vars', 'no-empty', 'TS2339', 'MD025', 'SC2086']) assert.ok(rejected.stderr.includes(rule), rule + rejected.stderr);
     rmSync(path.join(dir, 'scripts/bad.mjs')); rmSync(path.join(dir, 'bad.md')); rmSync(path.join(dir, 'bad.sh'));
-    writeFileSync(path.join(dir, 'bin/unused.mjs'), 'export const unused = 1;\n');
+    const directives = [
+      '// @ts-nocheck', '/// @ts-nocheck', '// @ts-ignore', '/// @ts-ignore',
+      '// @ts-expect-error', '/// @ts-expect-error', '/* @ts-ignore */',
+      '/** @ts-expect-error */', '/*\n * @ts-ignore */', '/*\n @ts-expect-error */',
+      '/**/ // @ts-nocheck', 'const value = 1; // @ts-ignore',
+      '/*\n * jscpd:ignore-start\n */', ...['public', 'internal', 'alpha', 'beta'].map((tag) => `/** @${tag} */`),
+    ];
+    const probes = directives.map((comment, i) => {
+      const file = `scripts/directive-${i}.cjs`;
+      writeFileSync(path.join(dir, file), `${comment}\nconsole.log('probe');\n`);
+      return file;
+    });
+    const hook = path.join(dir, '.githooks/commit-msg');
+    const hookText = readFileSync(hook, 'utf8');
+    writeFileSync(hook, hookText + '\n# shellcheck disable=SC2086\n');
+    const shell = '.githooks/synthetic-shell';
+    writeFileSync(path.join(dir, shell), '#!/usr/bin/env bash\n# shellcheck disable=SC2086\necho $unquoted\n');
+    const suppressed = gate(['--checks-only']);
+    assert.equal(suppressed.status, 1, suppressed.stdout + suppressed.stderr);
+    const suppressionFindings = JSON.parse(suppressed.stderr);
+    for (const file of [...probes, '.githooks/commit-msg', shell]) {
+      assert.ok(suppressionFindings.some(/** @param {{tool: string, file: string}} finding */
+        (finding) => finding.tool === 'suppression' && finding.file === file), file);
+    }
+    for (const file of probes) rmSync(path.join(dir, file));
+    writeFileSync(hook, hookText);
+    writeFileSync(path.join(dir, shell), '#!/bin/sh\necho $unquoted\n');
+    const shellError = gate(['--checks-only']);
+    assert.equal(shellError.status, 1, shellError.stdout + shellError.stderr);
+    assert.match(shellError.stderr, /SC2086/);
+    rmSync(path.join(dir, shell));
+
+    const locations = ['', 'bin/', 'scripts/', 'lib/', 'src/', 'skills/synthetic/scripts/'];
+    const sources = locations.flatMap((location) => ['js', 'mjs', 'cjs'].map((extension) => `${location}synthetic.${extension}`));
+    for (const file of sources) {
+      mkdirSync(path.dirname(path.join(dir, file)), { recursive: true });
+      writeFileSync(path.join(dir, file), 'const unused = 1;\nconsole.log((1).toUpperCase());\n');
+    }
+    const coverage = gate(['--checks-only']);
+    assert.equal(coverage.status, 1, coverage.stdout + coverage.stderr);
+    const coverageFindings = JSON.parse(coverage.stderr);
+    for (const file of sources) {
+      for (const tool of ['eslint', 'types']) assert.ok(coverageFindings.some(
+        /** @param {{tool: string, file: string}} finding */
+        (finding) => finding.tool === tool && finding.file === file), `${tool}: ${file}`);
+      rmSync(path.join(dir, file));
+    }
+    const deleted = path.join(dir, 'scripts/deleted.cjs');
+    writeFileSync(deleted, 'console.log("deleted");\n');
+    execFileSync('git', ['add', 'scripts/deleted.cjs'], { cwd: dir });
+    rmSync(deleted);
+    const strings = path.join(dir, 'scripts/strings.cjs');
+    writeFileSync(strings, 'console.log("// @ts-nocheck", `/** @public */`);\n');
+    const clean = gate(['--checks-only']);
+    assert.equal(clean.status, 0, clean.stdout + clean.stderr);
+    rmSync(strings);
+    writeFileSync(path.join(dir, 'bin/unused.cjs'), 'exports.unused = 1;\n');
     const unused = spawnSync(path.resolve('node_modules/.bin/knip'), [], { cwd: dir, encoding: 'utf8' });
-    assert.notEqual(unused.status, 0); assert.match(unused.stdout, /bin\/unused.mjs/);
-    rmSync(path.join(dir, 'bin/unused.mjs'));
+    assert.notEqual(unused.status, 0); assert.match(unused.stdout, /bin\/unused.cjs/);
+    rmSync(path.join(dir, 'bin/unused.cjs'));
     writeFileSync(path.join(dir, 'bin/library.mjs'), 'export const used = 1;\nexport const unused = 2;\n');
     writeFileSync(path.join(dir, 'scripts/consumer.mjs'), 'import { used } from "../bin/library.mjs";\nconsole.log(used);\n');
     const exported = spawnSync(path.resolve('node_modules/.bin/knip'), [], { cwd: dir, encoding: 'utf8' });

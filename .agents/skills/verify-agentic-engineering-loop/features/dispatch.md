@@ -2,7 +2,8 @@
 
 ## Sub-features
 
-Show help, reject unknown arguments, and dispatch the all-agent target.
+Show help, reject unknown arguments and invalid modes, install with defaults,
+accept the Node positional `install` verb, and dispatch the all-agent target.
 
 ## How to get to it (user POV)
 
@@ -11,7 +12,8 @@ Use `--help`, `--unknown`, or `--agent all` on either installer.
 ## Driving it with the CLI harness
 
 Run `npm run verify`. It invokes each public installer with a fresh synthetic HOME.
-Help exits zero with usage. Unknown arguments exit one. Node all-agent mode
+Default invocation copies all four skills to Hermes. Node accepts the positional
+`install` verb; Bash rejects it. Both reject an invalid mode. Help exits zero with usage. Unknown arguments exit one. Node all-agent mode
 installs every target. Bash all-agent mode fails when it reaches OpenCode, after
 installing Hermes, Claude, and Codex; the helper checks those partial writes.
 The transcript names each surface, agent, mode, and observed result.
