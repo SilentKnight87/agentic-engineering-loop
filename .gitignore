@@ -6,3 +6,4 @@ privacy_scan.py
 scripts/privacy_scan.py
 local-privacy-scan.py
 *.local-scan.py
+.verify/

@@ -1,0 +1,482 @@
+{
+  "base": "4e64f31b720841b62085c0a0d73d663c44f24817",
+  "findings": [
+    {
+      "tool": "types",
+      "file": "bin/install.js",
+      "rule": "TS7006",
+      "message": "Parameter 'srcDir' implicitly has an 'any' type.",
+      "source": "function copyDir(srcDir, destDir) {",
+      "occurrence": 1,
+      "fingerprint": "873e84cac74289c7fb02efbe7accef76675d45313cf1449f536f78f457b06646"
+    },
+    {
+      "tool": "types",
+      "file": "bin/install.js",
+      "rule": "TS7006",
+      "message": "Parameter 'destDir' implicitly has an 'any' type.",
+      "source": "function copyDir(srcDir, destDir) {",
+      "occurrence": 1,
+      "fingerprint": "e456b20f0997a47aa4b1cdca7eab814ddfd20148c37453d6c721bd4935c726e6"
+    },
+    {
+      "tool": "types",
+      "file": "bin/install.js",
+      "rule": "TS7006",
+      "message": "Parameter 'name' implicitly has an 'any' type.",
+      "source": "function installOne(name, base) {",
+      "occurrence": 1,
+      "fingerprint": "ba6cc34326416320e056dd2c6bdca2f15c07f9b151b24c31fa5f4e32aa328e31"
+    },
+    {
+      "tool": "types",
+      "file": "bin/install.js",
+      "rule": "TS7006",
+      "message": "Parameter 'base' implicitly has an 'any' type.",
+      "source": "function installOne(name, base) {",
+      "occurrence": 1,
+      "fingerprint": "c9c007b6b1759ca0d61d54545c9b38d7c96f3d30d718ef98713411e04e1649bc"
+    },
+    {
+      "tool": "types",
+      "file": "bin/install.js",
+      "rule": "TS7053",
+      "message": "Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ hermes: string[][]; claude: string[][]; codex: string[][]; opencode: string[][]; omp: string[][]; }'.\n  No index signature with a parameter of type 'string' was found on type '{ hermes: string[][]; claude: string[][]; codex: string[][]; opencode: string[][]; omp: string[][]; }'.",
+      "source": "} else if (targets[agent]) {",
+      "occurrence": 1,
+      "fingerprint": "9959a8a1a79df85d04c3791cf976cc214ed631c0ff51d659f5f02883ff6e34e8"
+    },
+    {
+      "tool": "types",
+      "file": "bin/install.js",
+      "rule": "TS7053",
+      "message": "Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ hermes: string[][]; claude: string[][]; codex: string[][]; opencode: string[][]; omp: string[][]; }'.\n  No index signature with a parameter of type 'string' was found on type '{ hermes: string[][]; claude: string[][]; codex: string[][]; opencode: string[][]; omp: string[][]; }'.",
+      "source": "targets[agent].forEach(([name, dest]) => installOne(name, dest));",
+      "occurrence": 1,
+      "fingerprint": "b1d472c2d6b505225f031dc3baa704c068fc2b68b17c7475dd3a600e354e1987"
+    },
+    {
+      "tool": "types",
+      "file": "bin/install.js",
+      "rule": "TS7031",
+      "message": "Binding element 'name' implicitly has an 'any' type.",
+      "source": "targets[agent].forEach(([name, dest]) => installOne(name, dest));",
+      "occurrence": 1,
+      "fingerprint": "ea0e3f4ce59dad0e4df6fc4b12353e5b3c05bb5d89a21d11f859f76c2a644500"
+    },
+    {
+      "tool": "types",
+      "file": "bin/install.js",
+      "rule": "TS7031",
+      "message": "Binding element 'dest' implicitly has an 'any' type.",
+      "source": "targets[agent].forEach(([name, dest]) => installOne(name, dest));",
+      "occurrence": 1,
+      "fingerprint": "43f363f2c3504705868ccb7cc24a33e3d4e254d569423f9bb7de6edb044c2e18"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "README.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|",
+      "occurrence": 1,
+      "fingerprint": "1257a7cb3da5ea87b493aee5a676eb1d67f3052b9c691aba232901a8624d203b"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "README.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|",
+      "occurrence": 1,
+      "fingerprint": "a8b839e0f4cc74909382f0a7dee7485ffac26e648ff529fb0408bc50ef9317e5"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "README.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|",
+      "occurrence": 2,
+      "fingerprint": "ecaa03c0fde27305b74dd741c83a5e8f04e0b32231915cc34ba8a762033f213d"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "README.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|",
+      "occurrence": 2,
+      "fingerprint": "e3e70155182eedcdd22897244346cc9195502e659f698bf256dbbf3c47c7faf3"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/build-review-loop-control-policy.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 1,
+      "fingerprint": "eaef171b294bdbd8d3ed0fe627f140e33dc0f4a325b324af55a290358530e24c"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/build-review-loop-control-policy.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 1,
+      "fingerprint": "a457a6e3909bb9c911fc20b09408919f3cce201e6047c28d0b625b5b9a4696fa"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/build-review-loop-control-policy.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 2,
+      "fingerprint": "50f7ddd3fd2ea834672b6d7773330d37025dff08902099b3b008464ffd4df036"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/build-review-loop-control-policy.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 2,
+      "fingerprint": "50a0290578a13a1e26fc8a5f91ca33abd8d93043cb56176641079fb37f950e26"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/build-review-loop-control-policy.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 3,
+      "fingerprint": "52ba2d2ac5929203fcfe8dd8cabf685b67a2c5e5f1a0bd84317f561d37b9e835"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/build-review-loop-control-policy.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 3,
+      "fingerprint": "9cc383c6055e880aa5940df00fe4587db1e612fba0f1a2f80bd673971dc90ae0"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/build-review-loop-control-policy.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|---|---|",
+      "occurrence": 1,
+      "fingerprint": "0f18b72da9f531a37cc01d1ac19ef50937e35969e8b50b841210a2a3d5c44ea9"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/build-review-loop-control-policy.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|---|---|",
+      "occurrence": 1,
+      "fingerprint": "6a60cfbf9a7b2a8969acd221d143e6eab2f64673b10fa7259812bd57e8bd45f0"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/build-review-loop-control-policy.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|---|---|",
+      "occurrence": 2,
+      "fingerprint": "1a3c1728fdc23c59bbd129cb3dcfbd095850d9b2babdbd5cf7c71445be1d4ee9"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/build-review-loop-control-policy.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|---|---|",
+      "occurrence": 2,
+      "fingerprint": "05ee0e3db3b830619434b33eb57e00615fd2b62fc957f072b4e4673b88c259b0"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/build-review-loop-control-policy.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|---|---|",
+      "occurrence": 3,
+      "fingerprint": "cb98dd42a93a986119be1fb992ac9cf4ab9a36f8c6cf68af27c7a6f9d41a311a"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/build-review-loop-control-policy.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|---|---|",
+      "occurrence": 3,
+      "fingerprint": "0afbdc2b7aaf6c52731a7a905270746e5981c9216e7e7b4ffabd8c5149185467"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/build-review-loop-control-policy.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|---|---|",
+      "occurrence": 4,
+      "fingerprint": "b29fb0152b3372c065fef262b8928ed6a17b02d938497f2f93ead533c4796306"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/build-review-loop-control-policy.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|---|---|",
+      "occurrence": 4,
+      "fingerprint": "6212ac74ec12d605a34d2bfce6ab2667c5002c8da28e0289ef82c24f9ded9d39"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/build-review-loop-control-policy.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|---|---|",
+      "occurrence": 5,
+      "fingerprint": "e1f3ed98277ef26f373b5e063c04fea4e6712daec64abed3b354a7ec15116783"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/build-review-loop-control-policy.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|---|---|",
+      "occurrence": 5,
+      "fingerprint": "bec40d7f05bbe65de2f63b8a6d598e185fc2cba3f88c00c2cb02b07c1e955bb3"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/current-agentic-loop-patterns-2026-06-18.md",
+      "rule": "MD041",
+      "message": "First line in a file should be a top-level heading",
+      "source": "> Historical snapshot. Kept for context; not live routing or selection. Verify current models and skills before use.",
+      "occurrence": 1,
+      "fingerprint": "a463e497ecc59b44b3b71c0f98ff99d68f0ef6f3bd09bfab486b2c415734c2a5"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/model-routing.md",
+      "rule": "MD041",
+      "message": "First line in a file should be a top-level heading",
+      "source": "> Historical snapshot. Kept for context; not live routing or selection. Verify current models and skills before use.",
+      "occurrence": 1,
+      "fingerprint": "fbe7ab71caf3f4493fb9668082da9eefc6c4e838db22f542498ea463ac95d148"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/model-routing.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|---|",
+      "occurrence": 1,
+      "fingerprint": "9e6a7c6d81c9ed97888abe311ef95dbb6b7a3b932a1e6a32ba0bf7683954076c"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/model-routing.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|---|",
+      "occurrence": 1,
+      "fingerprint": "79dc1333434cd3cc1302528c165aa194522defb00612e569501e85cd3844b7d3"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/model-routing.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|---|",
+      "occurrence": 2,
+      "fingerprint": "24e0568c1467fa618be9a8e65de9dec4c4d18df9d214abac104d69e4db40f0b6"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/model-routing.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|---|",
+      "occurrence": 2,
+      "fingerprint": "6c0a8ff9a296f0b7448f83bae77b379c0ca2b88bc178914a81a55374e28c57c4"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/model-routing.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|---|",
+      "occurrence": 3,
+      "fingerprint": "2a7db5d7aab983ba5b9fc6fdc613f34700b45a877e0a0b5d8f60a316d1c40f9b"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/model-routing.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|---|",
+      "occurrence": 3,
+      "fingerprint": "25eb6f6f8f24f432bb342a2523988164cce152253425211bc92e493289be59dc"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/model-routing.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|---|",
+      "occurrence": 4,
+      "fingerprint": "8596459140d8f31a8138d15264bab9f90827f66829d8ee58eb5dbbb6b83afa0b"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/model-routing.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|---|",
+      "occurrence": 4,
+      "fingerprint": "19a66bb14fad4efcde7300342709837bef45c8c824d2bbecc7d6778ca5183284"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/research-recipe.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 1,
+      "fingerprint": "49619c4d0d1a3e50462924bc0a7540a77ff81d322a8bdf5a6da60d3d4ded09ec"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/research-recipe.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 1,
+      "fingerprint": "1fa691372c9363afc142a46d20a85e45a3b06635699c172d59c70c83df1488ce"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/research-recipe.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 2,
+      "fingerprint": "da47e73053eca65b13135a4d21a07f5f6554cd6c95637039e911cdb03211c7c2"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/research-recipe.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 2,
+      "fingerprint": "28583c5992d4684d40d4d68ead40bd17f46cb9ee3cc9444b80c91247731f2921"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/research-recipe.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 3,
+      "fingerprint": "9f181f48421763251e9097628a1daad6fe41bd68dad486d2aebbca9ea5c7fb0c"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/research-recipe.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 3,
+      "fingerprint": "cbf731e2a8da126b0e065d1e8dd8cfbfc05419cbd5681dcc0ceb59541fa909ba"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/skill-map.md",
+      "rule": "MD041",
+      "message": "First line in a file should be a top-level heading",
+      "source": "> Historical snapshot. Kept for context; not live routing or selection. Verify current models and skills before use.",
+      "occurrence": 1,
+      "fingerprint": "ed91452eb6a310e49cce7c5bd069f5d6518cf749eda0f496a4ef2844d580728b"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/skill-map.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 1,
+      "fingerprint": "1ac6597924fb9a2a6925b53009397ccecd4d6207f9ad65ebb3403f6cb40c28b0"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/skill-map.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 1,
+      "fingerprint": "c1f04198650542ed9a782fd866a51f682d9ff8d037f8046f8b3a71688af787c6"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/skill-map.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 2,
+      "fingerprint": "0153eb5342f62c5f581c451d656d05d6cbbb0f7b1d796458ea90b463f12e032f"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/skill-map.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 2,
+      "fingerprint": "73e0e557f453435d7b5b01c2e0abb49a711b20595ef566cf01533ce134228b14"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/skill-map.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the right for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 3,
+      "fingerprint": "d78f254d15516f67ad3f62b1a30d6131e6abc62da0a9b33a43088b88f833acbf"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/references/skill-map.md",
+      "rule": "MD060",
+      "message": "Table pipe is missing space to the left for style \"compact\"",
+      "source": "|---|---|---|",
+      "occurrence": 3,
+      "fingerprint": "00c2e4055cde62171a8e3e9e90d6812c03b47ee1a09aaf66b08fb5fb4d05ad3e"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/agentic-engineering-loop/SKILL.md",
+      "rule": "MD040",
+      "message": "Fenced code blocks should have a language specified",
+      "source": "```",
+      "occurrence": 1,
+      "fingerprint": "a352c56b024597503b95744c224bf65cbdc7eff7f6b5161996548a9be69d95cf"
+    },
+    {
+      "tool": "markdownlint",
+      "file": "skills/factory-review/SKILL.md",
+      "rule": "MD040",
+      "message": "Fenced code blocks should have a language specified",
+      "source": "```",
+      "occurrence": 1,
+      "fingerprint": "9747608d70d2ecc56e87ebb351c78850dc5c47a666f5622fbfc7949a954b9628"
+    }
+  ]
+}
