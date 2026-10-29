@@ -29,7 +29,7 @@ const shells = files.filter((file) => file.endsWith('.sh') ||
   /^#!.*\b(?:bash|sh|dash|ksh|zsh)\b/.test(readFileSync(file, 'utf8').split('\n')[0]));
 /** @param {string} file @param {string} comment */
 function checkComment(file, comment) {
-  if (/@ts-(?:ignore|nocheck|expect-error)|shellcheck\s+(?:disable|source\s*=\s*\/dev\/null)|jscpd:ignore|@(public|internal|alpha|beta|alias)\b/i.test(comment)) {
+  if (/@ts-(?:ignore|nocheck|expect-error)|shellcheck\s+(?:disable|source\s*=)|jscpd:ignore|@(public|internal|alpha|beta|alias)\b/i.test(comment)) {
     findings.push({ tool: 'suppression', file, rule: 'no-suppressions', message: 'Do not suppress quality findings', source: comment.trim() });
   }
 }

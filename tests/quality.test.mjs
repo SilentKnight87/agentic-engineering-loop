@@ -36,12 +36,16 @@ test('the quality gate rejects synthetic defects and tool errors', { timeout: 24
     });
     const hook = path.join(dir, '.githooks/commit-msg');
     const hookText = readFileSync(hook, 'utf8');
-    writeFileSync(hook, hookText + '\n# shellcheck source=/dev/null\n');
+    const sourceDirectives = ['# shellcheck source=/dev/null', '# shellcheck source="/dev/null"', "# shellcheck source='/dev/null'"];
+    writeFileSync(hook, hookText + '\n' + sourceDirectives.join('\n') + '\n');
     const shell = '.githooks/synthetic-shell';
     writeFileSync(path.join(dir, shell), '#!/usr/bin/env bash\n# shellcheck disable=SC2086\necho $unquoted\n');
     const suppressed = gate(['--checks-only']);
     assert.equal(suppressed.status, 1, suppressed.stdout + suppressed.stderr);
     const suppressionFindings = JSON.parse(suppressed.stderr);
+    for (const directive of sourceDirectives) assert.ok(suppressionFindings.some(
+      /** @param {{source: string}} finding */
+      (finding) => finding.source === directive), directive);
     for (const file of [...probes, '.githooks/commit-msg', shell]) {
       assert.ok(suppressionFindings.some(/** @param {{tool: string, file: string}} finding */
         (finding) => finding.tool === 'suppression' && finding.file === file), file);
