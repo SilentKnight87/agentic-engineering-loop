@@ -59,7 +59,7 @@ for (const result of await eslint.lintFiles(javascript)) {
 const config = ts.readConfigFile('tsconfig.json', ts.sys.readFile);
 if (config.error) throw new Error(ts.flattenDiagnosticMessageText(config.error.messageText, '\n'));
 const parsed = ts.parseJsonConfigFileContent(config.config, ts.sys, '.');
-const program = ts.createProgram(parsed.fileNames, parsed.options);
+const program = ts.createProgram(javascript, parsed.options);
 for (const diagnostic of [...parsed.errors, ...ts.getPreEmitDiagnostics(program)]) {
   if (!diagnostic.file || diagnostic.start === undefined) throw new Error(ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n'));
   const file = path.relative(process.cwd(), path.resolve(diagnostic.file.fileName));

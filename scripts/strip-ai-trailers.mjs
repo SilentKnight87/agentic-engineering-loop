@@ -7,7 +7,7 @@ function isAiCoauthor(line) {
   const match = /^\s*Co-Authored-By:\s*([^<>]*?)(?:\s*<([^>]+)>)?\s*$/i.exec(line);
   if (!match) return false;
   const [, name] = match;
-  return /^(?:Claude(?: Code| (?:Opus|Sonnet|Haiku)(?:[- ][\d.]+)?)?|Codex|Cursor(?: Agent)?|(?:GitHub )?Copilot|Gemini(?:[- ][\d.]+(?: (?:Pro|Flash))?)?|GPT(?:[- ][\w.]+)?)(?:\s*\[bot\])?$/i.test(name);
+  return /^(?:Claude(?: Code| (?:Opus|Sonnet|Haiku)(?:[- ][\d.]+)?(?: \(\d+[MK] context\))?)?|(?:OpenAI )?Codex|Cursor(?: Agent)?|(?:GitHub )?Copilot|Gemini(?: CLI|[- ][\d.]+(?: (?:Pro|Flash))?)?|GPT(?:[- ][\w.]+)?)(?:\s*\[bot\])?$/i.test(name);
 }
 const cleaned = message.split(/(?<=\n)/).filter((line) =>
   !isAiCoauthor(line) && !/^\s*(?:[🤖✨]\s*)?Generated with\b/iu.test(line));

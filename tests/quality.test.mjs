@@ -54,7 +54,7 @@ test('the quality gate rejects synthetic defects and tool errors', { timeout: 24
     assert.match(shellError.stderr, /SC2086/);
     rmSync(path.join(dir, shell));
 
-    const locations = ['', 'bin/', 'scripts/', 'lib/', 'src/', 'skills/synthetic/scripts/'];
+    const locations = ['', 'bin/', 'scripts/', 'lib/', 'src/', '.githooks/', '.hidden/nested/', 'skills/synthetic/scripts/'];
     const sources = locations.flatMap((location) => ['js', 'mjs', 'cjs'].map((extension) => `${location}synthetic.${extension}`));
     for (const file of sources) {
       mkdirSync(path.dirname(path.join(dir, file)), { recursive: true });
