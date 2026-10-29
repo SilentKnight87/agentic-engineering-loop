@@ -23,11 +23,11 @@ test('the quality gate rejects synthetic defects and tool errors', { timeout: 24
     for (const rule of ['no-unused-vars', 'no-empty', 'TS2339', 'MD025', 'SC2086']) assert.ok(rejected.stderr.includes(rule), rule + rejected.stderr);
     rmSync(path.join(dir, 'scripts/bad.mjs')); rmSync(path.join(dir, 'bad.md')); rmSync(path.join(dir, 'bad.sh'));
     const directives = [
-      '// @ts-nocheck', '/// @ts-nocheck', '// @ts-ignore', '/// @ts-ignore',
+      '// @ts-nocheck', '// @TS-NOCHECK', '// @Ts-NoChEcK', '/// @ts-nocheck', '// @ts-ignore', '/// @ts-ignore',
       '// @ts-expect-error', '/// @ts-expect-error', '/* @ts-ignore */',
       '/** @ts-expect-error */', '/*\n * @ts-ignore */', '/*\n @ts-expect-error */',
       '/**/ // @ts-nocheck', 'const value = 1; // @ts-ignore',
-      '/*\n * jscpd:ignore-start\n */', ...['public', 'internal', 'alpha', 'beta'].map((tag) => `/** @${tag} */`),
+      '/*\n * jscpd:ignore-start\n */', ...['public', 'internal', 'alpha', 'beta', 'alias'].map((tag) => `/** @${tag} */`),
     ];
     const probes = directives.map((comment, i) => {
       const file = `scripts/directive-${i}.cjs`;
@@ -36,7 +36,7 @@ test('the quality gate rejects synthetic defects and tool errors', { timeout: 24
     });
     const hook = path.join(dir, '.githooks/commit-msg');
     const hookText = readFileSync(hook, 'utf8');
-    writeFileSync(hook, hookText + '\n# shellcheck disable=SC2086\n');
+    writeFileSync(hook, hookText + '\n# shellcheck source=/dev/null\n');
     const shell = '.githooks/synthetic-shell';
     writeFileSync(path.join(dir, shell), '#!/usr/bin/env bash\n# shellcheck disable=SC2086\necho $unquoted\n');
     const suppressed = gate(['--checks-only']);
@@ -67,6 +67,16 @@ test('the quality gate rejects synthetic defects and tool errors', { timeout: 24
       for (const tool of ['eslint', 'types']) assert.ok(coverageFindings.some(
         /** @param {{tool: string, file: string}} finding */
         (finding) => finding.tool === tool && finding.file === file), `${tool}: ${file}`);
+      rmSync(path.join(dir, file));
+    }
+    const unsupported = ['ts', 'mts', 'cts', 'jsx', 'tsx'].map((extension) => `src/unsupported.${extension}`);
+    for (const file of unsupported) writeFileSync(path.join(dir, file), 'export const value = 1;\n');
+    const uncovered = gate(['--checks-only']);
+    assert.equal(uncovered.status, 1, uncovered.stdout + uncovered.stderr);
+    const uncoveredFindings = JSON.parse(uncovered.stderr);
+    for (const file of unsupported) {
+      assert.ok(uncoveredFindings.some(/** @param {{rule: string, file: string}} finding */
+        (finding) => finding.rule === 'unsupported-source-extension' && finding.file === file), file);
       rmSync(path.join(dir, file));
     }
     const deleted = path.join(dir, 'scripts/deleted.cjs');
