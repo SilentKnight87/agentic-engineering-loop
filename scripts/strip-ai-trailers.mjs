@@ -10,7 +10,7 @@ function isAiCoauthor(line) {
   const botEmails = [['noreply', 'anthropic.com'], ['cursoragent', 'cursor.com']];
   if (botEmails.some(([local, domain]) => email?.toLowerCase() === `${local}@${domain}`)) return true;
   if (/^(?:copilot-swe-agent|gemini-code-assist)\[bot\]$/i.test(name)) return true;
-  const version = String.raw`\d+(?:[.-]\d+)*`;
+  const version = String.raw`\d+[a-z]?(?:[.-]\d+[a-z]?)*`;
   const claude = String.raw`Claude(?: Code|[- ](?:Opus|Sonnet|Haiku|Fable)(?:[- ]${version})?(?: \(\d+[MK] context\))?)?`;
   const gemini = String.raw`Gemini(?: CLI|[- ]${version}(?:[- ](?:Pro|Flash)(?:[- ]Lite)?)?(?:[- ]Preview)?)?`;
   const gpt = String.raw`GPT(?:[- ]${version}(?:[- ]Codex(?:[- ]Max)?)?)?`;

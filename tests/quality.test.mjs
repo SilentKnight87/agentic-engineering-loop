@@ -36,7 +36,7 @@ test('the quality gate rejects synthetic defects and tool errors', { timeout: 24
     });
     const hook = path.join(dir, '.githooks/commit-msg');
     const hookText = readFileSync(hook, 'utf8');
-    const sourceDirectives = ['# shellcheck source=/dev/null', '# shellcheck source="/dev/null"', "# shellcheck source='/dev/null'"];
+    const sourceDirectives = ['# shellcheck shell=bash source=/dev/null', '# shellcheck enable=all disable=SC1091', '# shellcheck source=/dev/null', '# shellcheck source="/dev/null"', "# shellcheck source='/dev/null'"];
     writeFileSync(hook, hookText + '\n' + sourceDirectives.join('\n') + '\n');
     const shell = '.githooks/synthetic-shell';
     writeFileSync(path.join(dir, shell), '#!/usr/bin/env bash\n# shellcheck disable=SC2086\necho $unquoted\n');
@@ -73,6 +73,11 @@ test('the quality gate rejects synthetic defects and tool errors', { timeout: 24
         (finding) => finding.tool === tool && finding.file === file), `${tool}: ${file}`);
       rmSync(path.join(dir, file));
     }
+    writeFileSync(path.join(dir, 'bin/unsupported-node'), '#!/usr/bin/env node\nconsole.log((1).toUpperCase());\n');
+    const nodeProbe = gate(['--checks-only']);
+    assert.equal(nodeProbe.status, 1, nodeProbe.stdout + nodeProbe.stderr);
+    assert.match(nodeProbe.stderr, /unsupported-source-extension/);
+    rmSync(path.join(dir, 'bin/unsupported-node'));
     const unsupported = ['ts', 'mts', 'cts', 'jsx', 'tsx'].map((extension) => `src/unsupported.${extension}`);
     for (const file of unsupported) writeFileSync(path.join(dir, file), 'export const value = 1;\n');
     const uncovered = gate(['--checks-only']);

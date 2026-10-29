@@ -20,7 +20,7 @@ function run(command, args, allowed = [0]) {
 }
 const files = run('git', ['ls-files', '--cached', '--others', '--exclude-standard', '-z'])
   .split('\0').filter((file) => file && existsSync(file) && statSync(file).isFile());
-for (const file of files.filter((file) => /\.(?:[cm]?ts|jsx|tsx)$/.test(file))) {
+for (const file of files.filter((file) => /\.(?:[cm]?ts|jsx|tsx)$/.test(file) || (!/\.(?:[cm]?js)$/.test(file) && /^#!.*\bnode\b/.test(readFileSync(file, 'utf8').split('\n')[0])))) {
   findings.push({ tool: 'coverage', file, rule: 'unsupported-source-extension',
     message: 'Configure lint and type coverage before adding this source extension', source: '' });
 }
@@ -29,7 +29,7 @@ const shells = files.filter((file) => file.endsWith('.sh') ||
   /^#!.*\b(?:bash|sh|dash|ksh|zsh)\b/.test(readFileSync(file, 'utf8').split('\n')[0]));
 /** @param {string} file @param {string} comment */
 function checkComment(file, comment) {
-  if (/@ts-(?:ignore|nocheck|expect-error)|shellcheck\s+(?:disable|source\s*=)|jscpd:ignore|@(public|internal|alpha|beta|alias)\b/i.test(comment)) {
+  if (/@ts-(?:ignore|nocheck|expect-error)|shellcheck\s+(?:\S+\s+)*(?:disable|source)\s*=|jscpd:ignore|@(public|internal|alpha|beta|alias)\b/i.test(comment)) {
     findings.push({ tool: 'suppression', file, rule: 'no-suppressions', message: 'Do not suppress quality findings', source: comment.trim() });
   }
 }

@@ -21,6 +21,7 @@ test('Git invokes the hook and preserves human attribution and message text', ()
       ['GPT Researcher', 'gpt', 'example.invalid'], ['Claude Fable Martin', 'claude', 'example.invalid'], ['Human Tester', 'human', 'cursor.com'],
     ].map(([name, local, domain]) => `${name} <${local}@${domain}>`);
     const bots = [
+      'GPT-4o',
       'Claude', 'Codex', 'Cursor', 'Copilot', 'Gemini', 'GPT-6', 'Claude Code',
       'GitHub Copilot', 'Cursor Agent', 'Claude Sonnet 4.5', 'Gemini 2.5 Pro',
       'Claude Opus 4.6 (1M context)', 'Gemini CLI', 'OpenAI Codex', 'Claude Fable 5.1',
