@@ -23,5 +23,24 @@
     "claude-code",
     "codex",
     "opencode"
-  ]
+  ],
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "26.6.6",
+    "eslint": "10.13.0",
+    "globals": "17.13.0",
+    "jscpd": "5.4.2",
+    "knip": "6.43.0",
+    "markdownlint": "0.41.1",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "quality": "node scripts/quality.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "verify": "node .agents/skills/verify-agentic-engineering-loop/scripts/drive.mjs",
+    "check:duplicates": "jscpd . .agents --format javascript,bash --min-lines 8 --min-tokens 100 --fail-on-new-clones 0 --ignore \"**/node_modules/**,**/.verify/**\" --reporters json --output .verify/duplication"
+  },
+  "engines": {
+    "node": ">=22"
+  }
 }
